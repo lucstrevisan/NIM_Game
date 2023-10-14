@@ -13,10 +13,7 @@ class Setup:
                     )
                 )
             )
-            if self.lang == 1:
-                self.d_lang = s.language(self.lang)
-                return self.lang
-            if self.lang == 2:
+            if self.lang in [1, 2]:
                 self.d_lang = s.language(self.lang)
                 return self.lang
             else:
@@ -235,7 +232,7 @@ class Setup:
 
 
 s = Setup()
-lang = s.setup_language()
+s.setup_language()
 type_of_game = s.setup_game()
 computer_score = 0
 player_score = 0
