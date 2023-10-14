@@ -4,12 +4,11 @@ class Setup:
         self.d_lang = 0
 
     def setup_language(self):
-        self.lang = 0
         while self.lang not in [1, 2]:
             self.lang = int(
                 input(
                     (
-                        "Choose your language/Escolha sua língua \n 1. English \n 2. Português (Brasil) "
+                        "Choose your language/Escolha sua idioma \n 1. English \n 2. Português (Brasil) "
                     )
                 )
             )
@@ -31,19 +30,19 @@ class Setup:
     def setup_game(
         self,
     ):  # This function will ask if it will be a single match or a best of three
-        print(s.messages(0))
+        print(s.messages(0))  # This will welcome player
         print(s.messages(1))
         type_of_game = 0
         while type_of_game not in [1, 2]:
-            type_of_game = int(input(s.messages(2)))
+            type_of_game = int(input(s.messages(2)))  # Ask if want best of 1 or 3
             if type_of_game == 1:
-                print(s.messages(3))
+                print(s.messages(3))  # Indicates the type chosen
                 return type_of_game
             elif type_of_game == 2:
-                print(s.messages(4))
+                print(s.messages(4))  # Indicates the type chosen
                 return type_of_game
             else:
-                print(s.messages(5))
+                print(s.messages(5))  # Error message
 
     def computer_move(
         self, n, m, order
@@ -59,7 +58,7 @@ class Setup:
                 s.messages(7),
                 n_now - play,
                 s.messages(8),
-            )
+            )  # Tells computer's move
             next_player = s.next_to_play(order)
             return play, next_player
         trick_to_win = n_now - play
@@ -76,7 +75,7 @@ class Setup:
                     s.messages(7),
                     n_now - play,
                     s.messages(8),
-                )
+                )  # Tells computer's move
                 next_player = s.next_to_play(order)
                 return play, next_player
             else:
@@ -90,7 +89,7 @@ class Setup:
                         s.messages(7),
                         n_now - play,
                         s.messages(8),
-                    )
+                    )  # Tells computer's move
                     next_player = s.next_to_play(order)
                     return play, next_player
                 else:
@@ -101,7 +100,7 @@ class Setup:
                         s.messages(7),
                         n_now - play,
                         s.messages(8),
-                    )
+                    )  # Tells computer's move
                     next_player = s.next_to_play(order)
                     return play, next_player
         next_player = s.next_to_play(order)
@@ -111,21 +110,21 @@ class Setup:
             s.messages(7),
             n_now - play,
             s.messages(8),
-        )
+        )  # Tells computer's move
         return play, next_player
 
     def player_move(self, n, m, order):  # This function will validate player's move
         play = 0
         next_player = s.next_to_play(order)
         while (play <= 0) or (play > m):
-            play = int(input(s.messages(9)))
-            if ((play != 0) or (play <= m)) and not (play < 0) and not (play > m):
-                print(s.messages(10), n - play, s.messages(8))
+            play = int(input(s.messages(9)))  # Ask for player's move
+            if (play != 0) and (play <= m):
+                print(s.messages(10), n - play, s.messages(8))  # Tells board state
                 return play, next_player
             elif (n - play) < 0:
-                print(s.messages(11))
+                print(s.messages(11))  # Error message
             else:
-                print(s.messages(12))
+                print(s.messages(12))  # Error message
 
     def board_now(self, n, play):  # This function will calculate the state of the board
         n_after = n - play
@@ -140,23 +139,21 @@ class Setup:
 
     def game(self):
         print(s.messages(13))
-        n = 0
-        m = 0
+        n = 0  # "N" is the number of pieces in NIM game
+        m = 0  # "M" is the max number each player can remove per play
         while (m > n) or (n < 3) or (m == 0):
-            n = int(input(s.messages(14)))  # "N" is the number of pieces in NIM game
-            m = int(
-                input(s.messages(15))
-            )  # "M" is the max number each player can remove per play
+            n = int(input(s.messages(14)))  # Asks for N number
+            m = int(input(s.messages(15)))  # Asks for M number
             if (m > n) or (n < 3) or (m == 0):
-                print(s.messages(16))
+                print(s.messages(16))  # Error message
             else:
                 break
         board = n
         if n % (m + 1) == 0:  # Computer will be using this trick to try to always win
-            print(s.messages(17))
+            print(s.messages(17))  # Says players will be first to play
             order = 1  # Player number will be 1
         else:
-            print(s.messages(18))
+            print(s.messages(18))  # Says computer will be first to play
             order = 2  # Computer number will be 2
 
         while board > 0:
@@ -166,7 +163,7 @@ class Setup:
                 if board == 0:
                     winner = 2
                     return winner
-            elif order == 1:
+            else:
                 play, order = s.player_move(board, m, order)
                 board = s.board_now(board, play)
                 if board == 0:
@@ -239,24 +236,24 @@ player_score = 0
 if type_of_game == 1:
     winner = s.game()
     if winner == 2:
-        print(s.messages(19))
+        print(s.messages(19))  # Tells who won
     elif winner == 1:
-        print(s.messages(20))
+        print(s.messages(20))  # Tells who won
 else:
     match = 1
     while match < 4:
         winner = s.game()
         if winner == 2:
-            print(s.messages(19))
+            print(s.messages(19))  # Tells who won this match
             computer_score += 1
         elif winner == 1:
-            print(s.messages(20))
+            print(s.messages(20))  # Tells who won this match
             player_score += 1
         match += 1
         if computer_score == 2:
-            print(s.messages(21))
+            print(s.messages(21))  # Tells who won the Bo3
             break
         elif player_score == 2:
-            print(s.messages(22))
+            print(s.messages(22))  # Tells who won the Bo3
             break
-        print(match, s.messages(23))
+        print(match, s.messages(23))  # Informs next match will start soon
