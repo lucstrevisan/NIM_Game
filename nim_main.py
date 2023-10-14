@@ -1,4 +1,4 @@
-from NIM_Game import Setup
+from nim_logic import Setup
 
 
 def main():
