@@ -1,3 +1,4 @@
+# In Nim game "N" is the number of pieces, "M" is the max number each player can remove per play
 class Setup:
     def __init__(self):
         self.lang = 0
@@ -8,7 +9,7 @@ class Setup:
             self.lang = int(
                 input(
                     (
-                        "Choose your language/Escolha sua idioma \n 1. English \n 2. Português (Brasil) "
+                        "Choose your language/Escolha seu idioma \n 1. English \n 2. Português (Brasil) "
                     )
                 )
             )
