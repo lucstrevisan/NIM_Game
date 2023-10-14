@@ -1,4 +1,3 @@
-# In Nim game "N" is the number of pieces, "M" is the max number each player can remove per play
 class Setup:
     def __init__(self):
         self.lang = 0
@@ -46,11 +45,11 @@ class Setup:
                 print(s.messages(5))  # Error message
 
     def computer_move(
-        self, n, m, order
+        self, pieces, pieces_per_round, order
     ):  # This function will calculate computer's move
-        n_now = n  # Verify how many pieces are in game at the moment
-        if n_now >= m:
-            play = m  # If there's no good number, the max one will be played
+        n_now = pieces  # Verify how many pieces are in game at the moment
+        if n_now >= pieces_per_round:
+            play = pieces_per_round  # If there's no good number, the max one will be played
         else:
             play = n_now
             print(
@@ -63,12 +62,12 @@ class Setup:
             next_player = s.next_to_play(order)
             return play, next_player
         trick_to_win = n_now - play
-        verify_trick = trick_to_win % (m + 1)
+        verify_trick = trick_to_win % (pieces_per_round + 1)
         while (verify_trick != 0) and (
             play > 1
         ):  # This while-loop will try to find the best number to play
             trick_to_win = n_now - play
-            verify_trick = trick_to_win % (m + 1)
+            verify_trick = trick_to_win % (pieces_per_round + 1)
             if verify_trick == 0:
                 print(
                     s.messages(6),
@@ -82,8 +81,8 @@ class Setup:
             else:
                 play -= 1
             if play == 1:
-                if n_now >= m:
-                    play = m
+                if n_now >= pieces_per_round:
+                    play = pieces_per_round
                     print(
                         s.messages(6),
                         play,
@@ -94,7 +93,7 @@ class Setup:
                     next_player = s.next_to_play(order)
                     return play, next_player
                 else:
-                    play = m
+                    play = pieces_per_round
                     print(
                         s.messages(6),
                         play,
@@ -114,21 +113,25 @@ class Setup:
         )  # Tells computer's move
         return play, next_player
 
-    def player_move(self, n, m, order):  # This function will validate player's move
+    def player_move(
+        self, pieces, pieces_per_round, order
+    ):  # This function will validate player's move
         play = 0
         next_player = s.next_to_play(order)
-        while (play <= 0) or (play > m):
+        while (play <= 0) or (play > pieces_per_round):
             play = int(input(s.messages(9)))  # Ask for player's move
-            if (play != 0) and (play <= m):
-                print(s.messages(10), n - play, s.messages(8))  # Tells board state
+            if (play != 0) and (play <= pieces_per_round):
+                print(s.messages(10), pieces - play, s.messages(8))  # Tells board state
                 return play, next_player
-            elif (n - play) < 0:
+            elif (pieces - play) < 0:
                 print(s.messages(11))  # Error message
             else:
                 print(s.messages(12))  # Error message
 
-    def board_now(self, n, play):  # This function will calculate the state of the board
-        n_after = n - play
+    def board_now(
+        self, pieces, play
+    ):  # This function will calculate the state of the board
+        n_after = pieces - play
         return n_after
 
     def next_to_play(self, order):  # This function will calculate next person to play
@@ -140,17 +143,19 @@ class Setup:
 
     def game(self):
         print(s.messages(13))
-        n = 0  # "N" is the number of pieces in NIM game
-        m = 0  # "M" is the max number each player can remove per play
-        while (m > n) or (n < 3) or (m == 0):
-            n = int(input(s.messages(14)))  # Asks for N number
-            m = int(input(s.messages(15)))  # Asks for M number
-            if (m > n) or (n < 3) or (m == 0):
+        pieces = 0  # Number of pieces in NIM game
+        pieces_per_round = 0  # Max number each player can remove per play
+        while (pieces_per_round > pieces) or (pieces < 3) or (pieces_per_round == 0):
+            pieces = int(input(s.messages(14)))  # Asks for N number
+            pieces_per_round = int(input(s.messages(15)))  # Asks for M number
+            if (pieces_per_round > pieces) or (pieces < 3) or (pieces_per_round == 0):
                 print(s.messages(16))  # Error message
             else:
                 break
-        board = n
-        if n % (m + 1) == 0:  # Computer will be using this trick to try to always win
+        board = pieces
+        if (
+            pieces % (pieces_per_round + 1) == 0
+        ):  # Computer will be using this trick to try to always win
             print(s.messages(17))  # Says players will be first to play
             order = 1  # Player number will be 1
         else:
@@ -159,13 +164,13 @@ class Setup:
 
         while board > 0:
             if order == 2:
-                play, order = s.computer_move(board, m, order)
+                play, order = s.computer_move(board, pieces_per_round, order)
                 board = s.board_now(board, play)
                 if board == 0:
                     winner = 2
                     return winner
             else:
-                play, order = s.player_move(board, m, order)
+                play, order = s.player_move(board, pieces_per_round, order)
                 board = s.board_now(board, play)
                 if board == 0:
                     winner = 1
