@@ -1,3 +1,5 @@
+# File .gitignore
+
 /build/
 /dist/
 .spec
