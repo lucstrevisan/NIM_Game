@@ -1,3 +1,4 @@
+# 'pack' is receiving 'en_us' or 'pt_br' and 'i' message's number
 def messages(pack, i):
     messages_dic = {
         "en_us": [

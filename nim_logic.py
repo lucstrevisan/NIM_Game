@@ -119,22 +119,22 @@ class Setup:
         return play, next_player
 
     def player_move(
-        self, pieces, pieces_per_round, order
+        self, pieces, pieces_per_round, order, board
     ):  # This function will validate player's move
         play = 0
         next_player = self.next_to_play(order)
-        while (play <= 0) or (play > pieces_per_round):
+        while ((play <= 0) or (play > pieces_per_round)) or ((play > board)):
             play = int(
                 input(lang_pack.messages(self.d_lang, 9))
             )  # Ask for player's move
-            if (play != 0) and (play <= pieces_per_round):
+            if (play != 0) and (play <= pieces_per_round) and (play <= board):
                 print(
                     lang_pack.messages(self.d_lang, 10),
                     pieces - play,
                     lang_pack.messages(self.d_lang, 8),
                 )  # Tells board state
                 return play, next_player
-            elif (pieces - play) < 0:
+            elif ((pieces - play) < 0) or ((board - play) < 0):
                 print(lang_pack.messages(self.d_lang, 11))  # Error message
             else:
                 print(lang_pack.messages(self.d_lang, 12))  # Error message
@@ -193,7 +193,7 @@ class Setup:
                     winner = 2
                     return winner
             else:
-                play, order = self.player_move(board, pieces_per_round, order)
+                play, order = self.player_move(board, pieces_per_round, order, board)
                 board = self.board_now(board, play)
                 if board == 0:
                     winner = 1
